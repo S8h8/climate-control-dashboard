@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "weather.api.base-url",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.base-url'"
+  },
+  {
+    "name": "weather.api.key",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.key'"
+  },
+  {
+    "name": "spring.cache.redis.port",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cache.redis.port'"
+  },
+  {
+    "name": "spring.cache.redis.host",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cache.redis.host'"
+  },
+  {
+    "name": "weather.api.base-url",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.base-url'"
+  },
+  {
+    "name": "weather.api.key",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.key'"
+  },
+  {
+    "name": "spring.cache.redis.port",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cache.redis.port'"
+  },
+  {
+    "name": "spring.cache.redis.host",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cache.redis.host'"
+  }
+]}

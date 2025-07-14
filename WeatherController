@@ -1,0 +1,33 @@
+package com.climate.control.controller;
+
+import com.climate.control.model.WeatherData;
+import com.climate.control.service.WeatherService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/weather")
+public class WeatherController {
+    
+    private final WeatherService weatherService;
+    
+    
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
+    
+    @GetMapping("/current/{location}")
+    public ResponseEntity<WeatherData> getCurrentWeather(
+            @PathVariable String location) {
+        WeatherData weatherData = weatherService.getCurrentWeather(location);
+        return ResponseEntity.ok(weatherData);
+    }
+    
+    @GetMapping("/history/{location}")
+    public ResponseEntity<List<WeatherData>> getWeatherHistory(
+            @PathVariable String location,
+            @RequestParam(defaultValue = "7") int days) {
+        return ResponseEntity.ok(weatherService.getWeatherHistory(location, days));
+    }
+}

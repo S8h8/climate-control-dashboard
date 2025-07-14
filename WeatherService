@@ -1,0 +1,50 @@
+package com.climate.control.service;
+
+import com.climate.control.model.WeatherData;
+import com.climate.control.repository.WeatherDataRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class WeatherService {
+    
+    private final RestTemplate restTemplate;
+    private final WeatherDataRepository repository;
+    
+    @Value("${weather.api.key}")
+    private String apiKey;
+    
+    @Value("${weather.api.base-url}")
+    private String baseUrl;
+    
+    public WeatherService(RestTemplate restTemplate, WeatherDataRepository repository) {
+        this.restTemplate = restTemplate;
+        this.repository = repository;
+    }
+    
+    @Cacheable(value = "weatherData", key = "#location")
+    public WeatherData getCurrentWeather(String location) {
+        String url = String.format("%s/weather?q=%s&appid=%s&units=metric",
+            baseUrl, location, apiKey);
+            
+        WeatherResponse response = restTemplate.getForObject(url, WeatherResponse.class);
+        WeatherData weatherData = mapToWeatherData(response);
+        
+        return repository.save(weatherData);
+    }
+    
+    private WeatherData mapToWeatherData(WeatherResponse response) {
+        return WeatherData.builder()
+            .location(response.getName())
+            .temperature(response.getMain().getTemp())
+            .humidity(response.getMain().getHumidity())
+            .windSpeed(response.getWind().getSpeed())
+            .condition(response.getWeather().get(0).getMain())
+            .timestamp(Instant.now())
+            .build();
+    }
+}

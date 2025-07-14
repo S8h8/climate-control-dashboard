@@ -1,0 +1,59 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './Dashboard.css';
+
+function Dashboard() {
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchWeatherData();
+  }, []);
+
+  const fetchWeatherData = async () => {
+    try {
+      const response = await axios.get('/api/v1/weather/current/my-location');
+      setWeatherData(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch weather data');
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="loading">Loading weather data...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  return (
+    <div className="dashboard">
+      <h1>Current Weather</h1>
+      {weatherData && (
+        <div className="weather-info">
+          <h2>{weatherData.location}</h2>
+          <div className="weather-details">
+            <div className="temperature">
+              {weatherData.temperature}°C
+            </div>
+            <div className="humidity">
+              Humidity: {weatherData.humidity}%
+            </div>
+            <div className="wind-speed">
+              Wind Speed: {weatherData.windSpeed} m/s
+            </div>
+            <div className="condition">
+              Condition: {weatherData.condition}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Dashboard;

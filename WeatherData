@@ -1,0 +1,31 @@
+package com.climate.control.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.Instant;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class WeatherData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String location;
+    private Double temperature;
+    private Double humidity;
+    private Double windSpeed;
+    private String condition;
+    private Instant timestamp;
+    private Double aqi;
+    private Double uvIndex;
+    private Double precipitation;
+}

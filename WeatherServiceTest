@@ -1,0 +1,27 @@
+// WeatherServiceTest.java
+@SpringBootTest
+class WeatherServiceTest {
+    
+    @Autowired
+    private WeatherService weatherService;
+    
+    @Autowired
+    private WeatherRepository repository;
+    
+    @Test
+    void testGetCurrentWeather() {
+        // Mock external API response
+        Mockito.when(restTemplate.getForObject(anyString(), eq(WeatherResponse.class)))
+               .thenReturn(createMockWeatherResponse());
+        
+        WeatherData result = weatherService.getCurrentWeather("London");
+        
+        assertNotNull(result);
+        assertEquals("London", result.getLocation());
+        assertTrue(result.getTemperature() > 0);
+        
+        // Verify caching
+        WeatherData cachedResult = weatherService.getCurrentWeather("London");
+        assertSame(result, cachedResult); // Should return cached instance
+    }
+}
